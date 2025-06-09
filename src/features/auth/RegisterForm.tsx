@@ -9,27 +9,41 @@ import styles from './LoginForm.module.scss';
 
 interface RegisterValues {
   email: string;
-  password: string;
-  confirmPassword: string;
+  phone: string;
+  inn: string;
+  message: string;
 }
 
 const initialValues: RegisterValues = {
   email: '',
-  password: '',
-  confirmPassword: '',
+  phone: '',
+  inn: '',
+  message: '',
 };
 
 const validationSchema = Yup.object({
   email: Yup.string().email('Некорректный email').required('Обязательное поле'),
-  password: Yup.string().min(6, 'Минимум 6 символов').required('Обязательное поле'),
-  confirmPassword: Yup.string()
-    .oneOf([Yup.ref('password')], 'Пароли не совпадают')
-    .required('Обязательное поле'),
+  phone: Yup.string().required('Обязательное поле'),
+  inn: Yup.string().required('Обязательное поле'),
+  message: Yup.string().required('Обязательное поле'),
 });
 
 export const RegisterForm: FC = () => {
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<any>(null);
   const navigate = useNavigate();
+
+  if (success) {
+    return (
+      <div className={styles.form}>
+        <h2 className={styles.title}>Регистрация успешна</h2>
+        <div className={styles.field}><b>Email:</b> {success['e-mail']}</div>
+        <div className={styles.field}><b>Телефон:</b> {success.phone}</div>
+        <div className={styles.field}><b>Пароль:</b> {success.password}</div>
+        <Button onClick={() => navigate('/login')} size="large" fullWidth>Войти</Button>
+      </div>
+    );
+  }
 
   return (
     <Formik
@@ -37,13 +51,10 @@ export const RegisterForm: FC = () => {
       validationSchema={validationSchema}
       onSubmit={async (values, { setSubmitting }) => {
         setError(null);
+        setSuccess(null);
         try {
-          const { confirmPassword, ...payload } = values;
-          const response = await httpClient.post(API_ENDPOINTS.auth.register, payload);
-          const { accessToken, refreshToken } = response.data;
-          localStorage.setItem('accessToken', accessToken);
-          localStorage.setItem('refreshToken', refreshToken);
-          navigate('/');
+          const response = await httpClient.post(API_ENDPOINTS.register, values);
+          setSuccess(response.data);
         } catch (e: any) {
           setError(e?.response?.data?.message || 'Ошибка регистрации');
         } finally {
@@ -61,14 +72,19 @@ export const RegisterForm: FC = () => {
             <ErrorMessage name="email" component="div" className={styles.error} />
           </div>
           <div className={styles.field}>
-            <label htmlFor="password">Пароль</label>
-            <Field type="password" name="password" id="password" autoComplete="new-password" />
-            <ErrorMessage name="password" component="div" className={styles.error} />
+            <label htmlFor="phone">Телефон</label>
+            <Field type="text" name="phone" id="phone" />
+            <ErrorMessage name="phone" component="div" className={styles.error} />
           </div>
           <div className={styles.field}>
-            <label htmlFor="confirmPassword">Повторите пароль</label>
-            <Field type="password" name="confirmPassword" id="confirmPassword" autoComplete="new-password" />
-            <ErrorMessage name="confirmPassword" component="div" className={styles.error} />
+            <label htmlFor="inn">ИНН</label>
+            <Field type="text" name="inn" id="inn" />
+            <ErrorMessage name="inn" component="div" className={styles.error} />
+          </div>
+          <div className={styles.field}>
+            <label htmlFor="message">Сообщение</label>
+            <Field as="textarea" name="message" id="message" />
+            <ErrorMessage name="message" component="div" className={styles.error} />
           </div>
           <Button type="submit" size="large" fullWidth isLoading={isSubmitting}>
             Зарегистрироваться

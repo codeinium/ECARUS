@@ -22,6 +22,10 @@ const validationSchema = Yup.object({
   password: Yup.string().min(6, 'Минимум 6 символов').required('Обязательное поле'),
 });
 
+const CLIENT_ID = 'web'; // TODO: вынести в .env
+const CLIENT_SECRET = 'secret'; // TODO: вынести в .env
+const SCOPE = '*';
+
 export const LoginForm: FC = () => {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -33,10 +37,18 @@ export const LoginForm: FC = () => {
       onSubmit={async (values, { setSubmitting }) => {
         setError(null);
         try {
-          const response = await httpClient.post(API_ENDPOINTS.auth.login, values);
-          const { accessToken, refreshToken } = response.data;
-          localStorage.setItem('accessToken', accessToken);
-          localStorage.setItem('refreshToken', refreshToken);
+          const payload = {
+            grant_type: 'password',
+            client_id: CLIENT_ID,
+            client_secret: CLIENT_SECRET,
+            username: values.email,
+            password: values.password,
+            scope: SCOPE,
+          };
+          const response = await httpClient.post(API_ENDPOINTS.auth.login, payload);
+          const { access_token, refresh_token } = response.data;
+          localStorage.setItem('accessToken', access_token);
+          localStorage.setItem('refreshToken', refresh_token);
           navigate('/');
         } catch (e: any) {
           setError(e?.response?.data?.message || 'Ошибка авторизации');

@@ -1,6 +1,7 @@
 import { FC, useState } from 'react';
 import styles from './Header.module.scss';
 import { LoginForm, logout } from '../../../features/auth';
+import { Link, useLocation } from 'react-router-dom';
 
 const Modal = ({ open, onClose, children }: { open: boolean, onClose: () => void, children: React.ReactNode }) => {
   if (!open) return null;
@@ -17,16 +18,17 @@ const Modal = ({ open, onClose, children }: { open: boolean, onClose: () => void
 export const Header: FC = () => {
   const [showModal, setShowModal] = useState(false);
   const isAuth = Boolean(localStorage.getItem('accessToken'));
+  const location = useLocation();
   return (
     <header className={styles.header}>
       <div className={styles.left}>
         <img src="/assets/images/vector/logo.svg" alt="ECORUS" className={styles.logo} />
       </div>
       <nav className={styles.nav}>
-        <a href="#" className={styles.active}>Главная</a>
-        <a href="#">Пункты сбора</a>
-        <a href="#">ЭкоМаркет</a>
-        <a href="#">О сервисе</a>
+        <Link to="/" className={location.pathname === '/' ? styles.active : ''}>Главная</Link>
+        <Link to="/collection-points" className={location.pathname.startsWith('/collection-points') ? styles.active : ''}>Пункты сбора</Link>
+        <Link to="/eco-market" className={location.pathname.startsWith('/eco-market') ? styles.active : ''}>ЭкоМаркет</Link>
+        <Link to="#" className={''}>О сервисе</Link>
       </nav>
       <div className={styles.right}>
         <div className={styles.city}>

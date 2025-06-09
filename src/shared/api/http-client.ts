@@ -1,6 +1,10 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { API_CONFIG } from '../config/api';
 
+const CLIENT_ID = 'web'; // TODO: вынести в .env
+const CLIENT_SECRET = 'secret'; // TODO: вынести в .env
+const SCOPE = '*';
+
 class HttpClient {
   private instance: AxiosInstance;
 
@@ -42,13 +46,20 @@ class HttpClient {
               throw new Error('No refresh token available');
             }
 
-            const response = await this.post('/auth/refresh', { refreshToken });
-            const { accessToken, refreshToken: newRefreshToken } = response.data;
+            const payload = {
+              grant_type: 'refresh_token',
+              client_id: CLIENT_ID,
+              client_secret: CLIENT_SECRET,
+              refresh_token: refreshToken,
+              scope: SCOPE,
+            };
+            const response = await this.post('/oauth/token', payload);
+            const { access_token, refresh_token } = response.data;
 
-            localStorage.setItem('accessToken', accessToken);
-            localStorage.setItem('refreshToken', newRefreshToken);
+            localStorage.setItem('accessToken', access_token);
+            localStorage.setItem('refreshToken', refresh_token);
 
-            originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+            originalRequest.headers.Authorization = `Bearer ${access_token}`;
             return this.instance(originalRequest);
           } catch (refreshError) {
             // Clear tokens and redirect to login

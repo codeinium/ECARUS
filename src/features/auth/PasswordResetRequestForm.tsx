@@ -30,7 +30,7 @@ export const PasswordResetRequestForm: FC = () => {
         setError(null);
         setSuccess(false);
         try {
-          await httpClient.post(API_ENDPOINTS.auth.forgot, values);
+          await httpClient.post(API_ENDPOINTS.forgot, values);
           setSuccess(true);
         } catch (e: any) {
           setError(e?.response?.data?.message || 'Ошибка отправки запроса');

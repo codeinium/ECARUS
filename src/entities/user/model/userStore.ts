@@ -27,19 +27,13 @@ export const useUserStore = create<UserStore>((set) => ({
     set({ isLoading: true, error: null });
     try {
       const res = await httpClient.get(API_ENDPOINTS.user.profile);
-      set({ profile: res.data, isLoading: false });
+      set({ profile: res.data.data, isLoading: false });
     } catch (e: any) {
       set({ error: e?.response?.data?.message || 'Ошибка загрузки профиля', isLoading: false });
     }
   },
-  updateProfile: async (data) => {
-    set({ isLoading: true, error: null });
-    try {
-      const res = await httpClient.put(API_ENDPOINTS.user.update, data);
-      set({ profile: res.data, isLoading: false });
-    } catch (e: any) {
-      set({ error: e?.response?.data?.message || 'Ошибка обновления профиля', isLoading: false });
-    }
+  updateProfile: async () => {
+    set({ error: 'Обновление профиля не поддерживается в текущем API' });
   },
   clear: () => set({ profile: null, error: null }),
 })); 
