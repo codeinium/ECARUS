@@ -1,0 +1,41 @@
+.page {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 16px;
+}
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  text-align: center;
+}
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+}
+.card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px 0 rgba(0, 11, 38, 0.12);
+  padding: 24px 20px;
+  min-width: 260px;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.name {
+  font-size: 20px;
+  font-weight: 600;
+}
+.address, .city, .schedule, .types {
+  font-size: 15px;
+  color: #444;
+}
+.error {
+  color: var(--error-color);
+  text-align: center;
+  margin-bottom: 16px;
+} 

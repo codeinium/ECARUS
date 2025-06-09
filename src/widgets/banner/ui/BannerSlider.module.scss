@@ -1,0 +1,30 @@
+.slider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  margin: 40px auto;
+  max-width: 1200px;
+}
+.arrow {
+  background: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  font-size: 32px;
+  color: #007AFF;
+  box-shadow: 0 4px 24px 0 rgba(0, 11, 38, 0.12);
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.arrow:hover {
+  background: #f0f0f0;
+}
+.slide {
+  flex: 1 1 0;
+  min-width: 0;
+} 

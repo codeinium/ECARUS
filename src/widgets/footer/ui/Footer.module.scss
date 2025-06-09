@@ -1,0 +1,20 @@
+.footer {
+  background: #fff;
+  box-shadow: 0 -0.5px 0 0 rgba(0,0,0,0.12);
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.contacts {
+  display: flex;
+  gap: 32px;
+  font-size: 16px;
+  color: rgba(0, 11, 38, 0.64);
+}
+.email {
+  font-weight: 500;
+}
+.phone {
+  font-weight: 500;
+} 

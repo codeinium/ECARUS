@@ -1,9 +1,9 @@
 import React, {FC} from "react";
-import './footer.module.scss'
+import styles from './Footer.module.scss'
 
 const Footer : FC = () => {
     return (
-        <div className='footer'>
+        <div className={styles.mainFooter}>
             <span>
                 info@ecorus.ru
             </span>
